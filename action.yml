@@ -1,0 +1,32 @@
+name: 'Repeat Action'
+description: 'Repeat given command n times or until succeeds'
+inputs:
+  command:
+    description: 'Command to execute'
+    required: true
+  count:
+    description: 'Count of repetitions'
+    required: false
+    default: 1
+outputs:
+  status:
+    description: "Exit value of the command (error if no execution was successful)"
+    value: ${{ steps.repeat.outputs.status }}
+runs:
+  using: "composite"
+  steps:
+    - name: Run action
+      id: repeat
+      shell: bash
+      run: |
+        for i in $(seq 1 ${{ inputs.count }});
+        do
+            echo "$i: ${{ inputs.command }}"
+            { ${{ inputs.command }} ; status=$?; } || true
+            echo "$i: status=$status"
+            if [[ "$status" -eq 0 ]]
+            then
+                break
+            fi
+        done
+        echo "statusr=$status" >> $GITHUB_OUTPUT
