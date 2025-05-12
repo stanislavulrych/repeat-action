@@ -29,4 +29,9 @@ runs:
                 break
             fi
         done
-        echo "statusr=$status" >> $GITHUB_OUTPUT
+        echo "status=$status" >> $GITHUB_OUTPUT
+    - name: Exit
+      shell: bash
+      run: |
+        echo "exitting with exitcode=$status"
+        exit $status
