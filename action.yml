@@ -33,5 +33,5 @@ runs:
     - name: Exit
       shell: bash
       run: |
-        echo "exitting with exitcode=$status"
-        exit $status
+        echo "exitting with exitcode=${{ steps.repeat.outputs.status }}"
+        exit ${{ steps.repeat.outputs.status }}
